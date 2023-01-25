@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Kontent.Ai.Delivery.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using ShowcaseCookiesStateNet.Models;
 using ShowcaseCookiesStateNet.Models.Generated;
 
@@ -24,15 +23,14 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         var client = (Request.Cookies["preview"] ?? "false") == "false" ? _productionDeliveryClient : _previewDeliveryClient;
-        var home = await client.GetItemAsync<object>("homepage");
+        var home = await client.GetItemAsync<Homepage>("homepage");
 
-        var result = JObject.Parse(home.ApiResponse.Content);
+        var title = home.Item.Content
+            .OfType<Message>()
+            .FirstOrDefault()
+            ?.Title;
 
-
-        var contentItemCodename = result["item"]?["elements"]?["content"]?["value"]?.First().ToString();
-        var title = result?["modular_content"]?[contentItemCodename ?? ""]?["elements"]?["title"]?["value"]?.ToString();
-
-        ViewBag.Title = title ?? "TITLE NOT FOUND - check implementation";
+        ViewBag.Title = title;
 
         return View();
     }
