@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics;
 using Kontent.Ai.Delivery.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using showcase_cookies_state_net.Models;
+using ShowcaseCookiesStateNet.Models;
+using ShowcaseCookiesStateNet.Models.Generated;
 
-namespace showcase_cookies_state_net.Controllers;
+namespace ShowcaseCookiesStateNet.Controllers;
 
 public class HomeController : Controller
 {
@@ -19,9 +20,28 @@ public class HomeController : Controller
         _productionDeliveryClient = deliveryClientFactory.Get("production");
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        var client = (Request.Cookies["preview"] ?? "false") == "false" ? _productionDeliveryClient : _previewDeliveryClient;
+        var home = await client.GetItemAsync<Homepage>("homepage");
+
+        var title = home.Item.Content
+            .OfType<Message>()
+            .FirstOrDefault()
+            ?.Title;
+
+        ViewBag.Title = title;
+
         return View();
+    }
+
+    public IActionResult Cookie()
+    {
+        var currentCookie = Request.Cookies["preview"] ?? "false";
+
+        Response.Cookies.Append("preview", currentCookie == "false" ? "true" : "false");
+
+        return Redirect("/");
     }
 
     public IActionResult Privacy()

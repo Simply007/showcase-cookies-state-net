@@ -1,4 +1,5 @@
 using Kontent.Ai.Delivery.Extensions.DependencyInjection;
+using ShowcaseCookiesStateNet.Models.Generated;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,18 +15,18 @@ builder.Services.AddMultipleDeliveryClientFactory
                     deliveryOptionBuilder => deliveryOptionBuilder
                         .WithProjectId("6d7f2b4b-9432-012e-f6be-c9feb74c3912")
                         .UseProductionApi()
-                        .Build()
-                    // optionalClientSetup =>
-                        // optionalClientSetup.WithTypeProvider(new ProjectAProvider())
+                        .Build(),
+                    optionalClientSetup =>
+                        optionalClientSetup.WithTypeProvider(new CustomTypeProvider())
                 )
                 .AddDeliveryClient(
                     "preview",
                     deliveryOptionBuilder => deliveryOptionBuilder
                         .WithProjectId("6d7f2b4b-9432-012e-f6be-c9feb74c3912")
-                        .UsePreviewApi("ew0KICAiYWxnIjogIkhTMjU2IiwNCiAgInR5cCI6ICJKV1QiDQp9.ew0KICAianRpIjogImQ0YzIwYjE4ZmM1ZjRhYmU4ZWFmMmY2NjE2YTJiYjQ3IiwNCiAgImlhdCI6ICIxNjc0NTYwODgxIiwNCiAgImV4cCI6ICIxNzA2MDk2ODIwIiwNCiAgInZlciI6ICIxLjAuMCIsDQogICJwcm9qZWN0X2lkIjogIjZkN2YyYjRiOTQzMjAxMmVmNmJlYzlmZWI3NGMzOTEyIiwNCiAgImF1ZCI6ICJkZWxpdmVyLmtlbnRpY29jbG91ZC5jb20iDQp9.AgQTXM-IFZ5WJcMPJZNgbwMjZFZ-T0WE5APNqDa0U7o")
-                        .Build()
-                    // optionalClientSetup =>
-                    //     optionalClientSetup.WithTypeProvider(new ProjectBProvider())
+                        .UsePreviewApi("ew0KICAiYWxnIjogIkhTMjU2IiwNCiAgInR5cCI6ICJKV1QiDQp9.ew0KICAianRpIjogIjI0MDlhNzhjNmU4ODRlMzI5YWQwMGIxZTA0NWQzZmNlIiwNCiAgImlhdCI6ICIxNjc0NTYyNDIxIiwNCiAgImV4cCI6ICIxNzA2MDk4MzgwIiwNCiAgInZlciI6ICIxLjAuMCIsDQogICJwcm9qZWN0X2lkIjogIjZkN2YyYjRiOTQzMjAxMmVmNmJlYzlmZWI3NGMzOTEyIiwNCiAgImF1ZCI6ICJwcmV2aWV3LmRlbGl2ZXIua2VudGljb2Nsb3VkLmNvbSINCn0._z-kyRCcDwSwS-74zWF6gRnnSFwEFhKEdPGQXahY1xY")
+                        .Build(),
+                    optionalClientSetup =>
+                        optionalClientSetup.WithTypeProvider(new CustomTypeProvider())
                 )
                 .Build()
         ); ;
@@ -42,7 +43,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-// wefrweg
+
 app.UseStaticFiles();
 
 app.UseRouting();

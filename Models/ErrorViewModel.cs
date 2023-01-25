@@ -1,4 +1,4 @@
-namespace showcase_cookies_state_net.Models;
+namespace ShowcaseCookiesStateNet.Models;
 
 public class ErrorViewModel
 {

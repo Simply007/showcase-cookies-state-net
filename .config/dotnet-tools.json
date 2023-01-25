@@ -1,5 +1,12 @@
 {
   "version": 1,
   "isRoot": true,
-  "tools": {}
+  "tools": {
+    "kontent.ai.modelgenerator": {
+      "version": "8.1.1",
+      "commands": [
+        "KontentModelGenerator"
+      ]
+    }
+  }
 }
