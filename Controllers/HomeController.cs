@@ -39,7 +39,10 @@ public class HomeController : Controller
     {
         var currentCookie = Request.Cookies["preview"] ?? "false";
 
-        Response.Cookies.Append("preview", currentCookie == "false" ? "true" : "false");
+        Response.Cookies.Append("preview", currentCookie == "false" ? "true" : "false", new CookieOptions {
+            Secure = true,
+            SameSite = SameSiteMode.None
+        });
 
         return Redirect("/");
     }
